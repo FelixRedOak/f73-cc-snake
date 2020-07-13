@@ -5,8 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -95,31 +93,19 @@ public class GameviewAndKeyListener extends JPanel implements KeyListener {
 
 		// TODO: use HEAD_POSIION variable instead of "0"?
 		// TODO: mouth-image -> map?
-		for (int a = 0; a < snakeMovement.getLengthOfSnake(); a++) {
-			// TODO: maybe a switch?
-			// TODO: a -> if-else
-			
-			if (a == 0) {
-				if (snakeMovement.getHeadDirection() == Direction.RIGHT) {
-					paintSnakePart(g, rightmouth, a);	
-				}
-				
-				if (snakeMovement.getHeadDirection() == Direction.LEFT) {
-					paintSnakePart(g, leftmouth, a);	
-				}
-				
-				if (snakeMovement.getHeadDirection() == Direction.DOWN) {
-					paintSnakePart(g, downmouth, a);	
-				}
-				
-				if (snakeMovement.getHeadDirection() == Direction.UP) {
-					paintSnakePart(g, upmouth, a);	
-				}
+		for (int snakePartIndex = 0; snakePartIndex < snakeMovement.getLengthOfSnake(); snakePartIndex++) {
+			if (snakePartIndex == 0) {
+				// TODO: use arrow notation
+				ImageIcon headIcon = switch (snakeMovement.getHeadDirection()) {
+					case RIGHT: yield rightmouth;
+					case LEFT: yield leftmouth;
+					case UP: yield upmouth;
+					case DOWN: yield downmouth;
+					default: throw new IllegalArgumentException("Unexpected value: " + snakeMovement.getHeadDirection());
+				};
+				paintSnakePart(g, headIcon, snakePartIndex);
 			} else {
-				paintSnakePart(g, snakeimage, a);				
-			}
-
-			if (a != 0) {
+				paintSnakePart(g, snakeimage, snakePartIndex);				
 			}
 
 		}
@@ -153,8 +139,8 @@ public class GameviewAndKeyListener extends JPanel implements KeyListener {
 		g.dispose();
 	}
 
-	private void paintSnakePart(Graphics g, ImageIcon imageIcon, int a) {
-		imageIcon.paintIcon(this, g, snakeMovement.getXCoordinates()[a], snakeMovement.getYCoordinates()[a]);
+	private void paintSnakePart(Graphics graphics, ImageIcon imageIcon, int snakePartIndex) {
+		imageIcon.paintIcon(this, graphics, snakeMovement.getXCoordinates()[snakePartIndex], snakeMovement.getYCoordinates()[snakePartIndex]);
 	}
 
 	@Override
