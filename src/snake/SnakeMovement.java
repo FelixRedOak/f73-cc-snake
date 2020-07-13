@@ -10,7 +10,7 @@ public class SnakeMovement implements ActionListener {
 
 	private static final int RIGHT_LIMIT_COORDINATE = 850;
 	private static final int LEFT_LIMIT_COORDINATE = 25;
-	private static final int HEAD_POSITION = 0;
+	static final int HEAD_POSITION = 0;
 	private static final int TOP_LIMIT_COORDINATE = 75;
 	private static final int BOTTOM_LIMIT_COORDINATE = 625;
 	private static final int STEP_LENGTH = 25;
@@ -26,7 +26,8 @@ public class SnakeMovement implements ActionListener {
 	private int[] xCoordinates = new int[MAX_SNAKE_LENGTH];
 	private int[] yCoordinates = new int[MAX_SNAKE_LENGTH];
 
-	private Direction headDirection;
+	// TODO: check if "right" is better
+	private Direction headDirection = Direction.NONE;
 
 	private int lengthOfSnake = START_SNAKE_LENGTH;
 
@@ -128,23 +129,15 @@ public class SnakeMovement implements ActionListener {
 		xCoordinates[i] = xCoordinates[i - 1];
 		yCoordinates[i] = yCoordinates[i - 1];
 	}
-	
-	public int[] getSnakeXLength() {
+
+	public int[] getXCoordinates() {
 		return xCoordinates;
 	}
 
-	public void setSnakeXLength(int[] snakeXLength) {
-		this.xCoordinates = snakeXLength;
-	}
-
-	public int[] getSnakeYLength() {
+	public int[] getYCoordinates() {
 		return yCoordinates;
 	}
 
-	public void setSnakeYLength(int[] snakeYLength) {
-		this.yCoordinates = snakeYLength;
-	}
-	
 	public Direction getHeadDirection() {
 		return headDirection;
 	}

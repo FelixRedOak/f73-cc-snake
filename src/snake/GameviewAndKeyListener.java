@@ -3,14 +3,12 @@ package snake;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 // KeyListener: Tastatureingaben -> Richtung ändern
 // JPanel: Zeichenbereich
@@ -55,13 +53,13 @@ public class GameviewAndKeyListener extends JPanel implements KeyListener
 	{
 		if(moves == 0)
         {
-            snakeMovement.getSnakeXLength()[2] = 50; 
-            snakeMovement.getSnakeXLength()[1] = 75;
-            snakeMovement.getSnakeXLength()[0] = 100;
+            snakeMovement.getXCoordinates()[2] = 50; 
+            snakeMovement.getXCoordinates()[1] = 75;
+            snakeMovement.getXCoordinates()[0] = 100;
             
-            snakeMovement.getSnakeYLength()[2] = 100;
-            snakeMovement.getSnakeYLength()[1] = 100;
-            snakeMovement.getSnakeYLength()[0] = 100;
+            snakeMovement.getYCoordinates()[2] = 100;
+            snakeMovement.getYCoordinates()[1] = 100;
+            snakeMovement.getYCoordinates()[0] = 100;
             
         }
 		//draw title image border
@@ -91,56 +89,59 @@ public class GameviewAndKeyListener extends JPanel implements KeyListener
 		g.drawString("Length: "+snakeMovement.getLengthOfSnake(), 780, 50);
 		
 		rightmouth = new ImageIcon("rightmouth.png");
-        rightmouth.paintIcon(this, g, snakeMovement.getSnakeXLength()[0], snakeMovement.getSnakeYLength()[0]);
+        rightmouth.paintIcon(this, g, snakeMovement.getXCoordinates()[SnakeMovement.HEAD_POSITION], snakeMovement.getYCoordinates()[SnakeMovement.HEAD_POSITION]);
         
+        // TODO: use HEAD_POSIION variable instead of "0"?
         for(int a = 0; a<snakeMovement.getLengthOfSnake(); a++)
         {
-            if(a==0 && snakeMovement.isRight())
+        	// TODO: maybe a switch?
+            if(a==0 && snakeMovement.getHeadDirection() == Direction.RIGHT)
             {
                 rightmouth = new ImageIcon("rightmouth.png");
-                rightmouth.paintIcon(this, g, snakexlength[a], snakeylength[a]);
+                rightmouth.paintIcon(this, g, snakeMovement.getXCoordinates()[a], snakeMovement.getYCoordinates()[a]);
             }
             
-            if(a==0 && snakeMovement.isLeft())
+            if(a==0 && snakeMovement.getHeadDirection() == Direction.LEFT)
             {
                 leftmouth = new ImageIcon("leftmouth.png");
-                leftmouth.paintIcon(this, g, snakexlength[a], snakeylength[a]);
+                leftmouth.paintIcon(this, g, snakeMovement.getXCoordinates()[a], snakeMovement.getYCoordinates()[a]);
             }
             
-            if(a==0 && down)
+            if(a==0 && snakeMovement.getHeadDirection() == Direction.DOWN)
             {
                 downmouth = new ImageIcon("downmouth.png");
-                downmouth.paintIcon(this, g, snakexlength[a], snakeylength[a]);
+                downmouth.paintIcon(this, g, snakeMovement.getXCoordinates()[a], snakeMovement.getYCoordinates()[a]);
             }
             
-            if(a==0 && up)
+            if(a==0 && snakeMovement.getHeadDirection() == Direction.UP)
             {
                 upmouth = new ImageIcon("upmouth.png");
-                upmouth.paintIcon(this, g, snakexlength[a], snakeylength[a]);
+                upmouth.paintIcon(this, g, snakeMovement.getXCoordinates()[a], snakeMovement.getYCoordinates()[a]);
             }
         
             if(a!=0)
             {
                 snakeimage = new ImageIcon("snakeimage.png");
-                snakeimage.paintIcon(this, g, snakexlength[a], snakeylength[a]);
+                snakeimage.paintIcon(this, g, snakeMovement.getXCoordinates()[a], snakeMovement.getYCoordinates()[a]);
             }
                 
         }
         
         enemyimage=new ImageIcon("enemy.png");
         
-        if((enemyxpos[xpos]== snakexlength[0] && enemyypos[ypos]==snakeylength[0]))
+        if((enemyxpos[xpos]== snakeMovement.getXCoordinates()[0] && enemyypos[ypos]==snakeMovement.getYCoordinates()[0]))
         {
-        	lengthofsnake++;
+        	// TODO: maybe replace set... by reset/inc
+        	snakeMovement.setLengthOfSnake(snakeMovement.getLengthOfSnake() + 1);
         	score++;
         	xpos=random.nextInt(34);
         	ypos=random.nextInt(23);
         }
         
         enemyimage.paintIcon(this, g, enemyxpos[xpos], enemyypos[ypos]);
-        for(int b=1;b<lengthofsnake;b++)
+        for(int b=1;b<snakeMovement.getLengthOfSnake();b++)
         {
-        	if(snakexlength[b]==snakexlength[0] && snakeylength[b]==snakeylength[0])
+        	if(snakeMovement.getXCoordinates()[b]==snakeMovement.getXCoordinates()[0] && snakeMovement.getYCoordinates()[b]==snakeMovement.getYCoordinates()[0])
         	{
         		snakeMovement.setHeadDirection(Direction.NONE);
         		
